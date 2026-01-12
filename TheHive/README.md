@@ -1,1 +1,3 @@
 ## TheHive
+
+# Configuration
