@@ -2,154 +2,130 @@
 
 ## 📌 Overview
 
-This document outlines the architecture of the SOC Automation Lab. The environment was designed to simulate a real-world Security Operations Center (SOC) pipeline integrating SIEM, SOAR, Case Management, and automated incident response.
+This document outlines the infrastructure and workflow of the SOC Automation Lab.  
+The lab simulates a real-world SOC environment integrating:
 
-The lab demonstrates how alerts are generated, enriched, escalated, and responded to automatically.
+- SIEM (Wazuh)
+- SOAR (Shuffle)
+- Case Management (TheHive)
+- Email alerting
+- Automated active response
 
 ---
 
-## 🏗️ High-Level Architecture
+# 🏗️ High-Level Architecture
 
-![SOC Architecture](soc-architecture.png)
+![SOC Architecture](./soc-architecture.png)
 
-### Workflow Summary
+## 🔁 End-to-End Workflow
 
 1. Windows 10 client generates security events.
-2. Wazuh Agent forwards logs to the Wazuh Manager.
-3. Wazuh Manager analyzes logs and triggers alerts.
-4. Alerts are forwarded to Shuffle (SOAR platform).
-5. Shuffle enriches Indicators of Compromise (IOCs) using OSINT sources.
+2. Wazuh Agent forwards logs to Wazuh Manager.
+3. Wazuh analyzes events and triggers alerts.
+4. Alerts are sent to Shuffle (SOAR).
+5. Shuffle enriches IOCs using OSINT.
 6. Shuffle creates a case in TheHive.
 7. Email notification is sent to the SOC Analyst.
 8. Upon approval, a response action is triggered.
-9. Wazuh executes active response on the Windows endpoint.
+9. Wazuh performs active response on the Windows endpoint.
+
+This demonstrates a full detection-to-response pipeline.
 
 ---
 
-## ☁️ Cloud Infrastructure
+# ☁️ Cloud Infrastructure
 
-The lab components were deployed using separate Ubuntu cloud servers to simulate a distributed SOC environment.
+The lab is deployed across two dedicated Ubuntu cloud servers to simulate production-like separation of services.
 
 ---
 
-### 🛡️ Wazuh Server
+## 🛡️ Wazuh Server (SIEM)
 
-**Purpose:** SIEM + Log Management + Active Response
+![Wazuh Cloud Server](./Wazuh-Cloud-Server.jpg)
 
-**Specifications:**
+### Specifications
 - OS: Ubuntu 24.04 LTS (x64)
 - vCPUs: 4
 - RAM: 8GB
 - Storage: 160GB SSD
 - Location: London
 
-**Responsibilities:**
-- Receive logs from Windows Wazuh Agent
+### Responsibilities
+- Receive endpoint logs
 - Apply detection rules
-- Generate alerts
+- Trigger alerts
 - Send alerts to Shuffle
 - Execute active response commands
 
 ---
 
-### 🧠 TheHive Server
+## 🧠 TheHive Server (Case Management)
 
-**Purpose:** Case Management Platform
+![TheHive Cloud Server](./TheHive-Cloud-Server.jpg)
 
-**Specifications:**
+### Specifications
 - OS: Ubuntu 24.04 LTS (x64)
 - vCPUs: 6
 - RAM: 16GB
 - Storage: 320GB SSD
 - Location: London
 
-**Responsibilities:**
+### Responsibilities
 - Receive enriched alerts from Shuffle
-- Create and manage incident cases
-- Provide investigation interface for SOC Analyst
-- Store artifacts and observables
+- Automatically create cases
+- Store observables and artifacts
+- Provide investigation dashboard for SOC Analyst
 
 ---
 
-## 🔁 Data Flow Breakdown
+# 🔄 Data Flow Breakdown
 
-### 1️⃣ Endpoint Telemetry Collection
-- Windows 10 machine runs Wazuh Agent
-- Security events are generated (e.g., suspicious activity)
-- Logs are sent to Wazuh Manager
+### 1️⃣ Endpoint Telemetry
+Windows 10 machine runs the Wazuh Agent and forwards security logs to the Wazuh Manager.
 
-### 2️⃣ Detection & Alert Generation
-- Wazuh applies built-in and custom rules
-- Alerts are triggered when rule conditions are met
+### 2️⃣ Detection Engine
+Wazuh applies built-in and custom rules to identify suspicious activity.
 
-### 3️⃣ SOAR Automation (Shuffle)
-- Receives alert via webhook/API
-- Extracts IOCs (IP, hash, domain, etc.)
-- Enriches data using OSINT integrations
-- Decides response workflow
+### 3️⃣ SOAR Automation
+Shuffle:
+- Receives alerts via webhook
+- Extracts IOCs (IP, domain, hash, etc.)
+- Performs OSINT enrichment
+- Decides next action
 
-### 4️⃣ Case Creation (TheHive)
-- Shuffle pushes alert data into TheHive
-- A new case is automatically created
-- Observables are attached
+### 4️⃣ Case Creation
+TheHive:
+- Automatically creates an incident case
+- Attaches enriched observables
+- Makes alert available for analyst review
 
-### 5️⃣ Notification & Response
-- Email notification sent to SOC Analyst
-- Analyst reviews alert
-- If malicious → response action executed
-- Wazuh performs active response on endpoint
+### 5️⃣ Automated Response
+If malicious activity is confirmed:
+- Shuffle triggers response
+- Wazuh executes active response
+- Endpoint is contained
 
 ---
 
-## 🎯 Architectural Design Goals
+# 🎯 Architecture Goals
 
-This architecture was designed to:
-
-- Simulate a real SOC environment
-- Automate alert enrichment
-- Reduce analyst workload
+- Simulate real SOC infrastructure
 - Demonstrate SIEM-to-SOAR integration
-- Enable automated containment actions
-- Provide full alert lifecycle visibility
+- Automate enrichment & case creation
+- Reduce manual analyst workload
+- Enable active endpoint response
 
 ---
 
-## 🔐 Security Considerations
+# ✅ Summary
 
-- Servers are separated to mimic production environments
-- API keys are used for integrations
-- Webhooks are configured for secure communication
-- Active response is controlled via rule logic
+This architecture reflects modern SOC design principles by combining:
 
----
+- Log collection
+- Detection
+- Enrichment
+- Case management
+- Notification
+- Automated containment
 
-## 📈 SOC Automation Pipeline
-
-Windows Client  
-↓  
-Wazuh (SIEM & Detection)  
-↓  
-Shuffle (SOAR & Enrichment)  
-↓  
-TheHive (Case Management)  
-↓  
-SOC Analyst  
-↓  
-Automated Response  
-↓  
-Endpoint Containment  
-
----
-
-## 🚀 Summary
-
-This SOC Automation Lab demonstrates a complete detection-to-response pipeline:
-
-- Log ingestion
-- Alert detection
-- Automated enrichment
-- Case creation
-- Analyst notification
-- Active response execution
-
-The architecture reflects modern SOC design principles integrating SIEM, SOAR, and case management into a unified automated workflow.
+The lab demonstrates a complete and automated incident response lifecycle.
