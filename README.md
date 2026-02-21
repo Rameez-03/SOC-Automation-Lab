@@ -46,15 +46,13 @@ The entire pipeline — from a threat being executed on the endpoint to a case a
 
 ## 2. Architecture & Infrastructure
 
-![SOC Architecture](./soc-architecture.png)
-
-![SOC Lab Diagram](./SOC_Lab_Diagram_drawio.png)
+![SOC Architecture](./Architecture/soc-architecture.png)
 
 ### Cloud Servers
 
 The lab runs across two dedicated Ubuntu cloud servers hosted in London, keeping SIEM and case management separated as they would be in a real production environment.
 
-![Cloud Servers](./Cloud-Servers.jpg)
+![Cloud Servers](./Architecture//Cloud-Servers.jpg)
 
 | Server | Label | IP Address | vCPUs | RAM | Storage | OS |
 |--------|-------|-----------|-------|-----|---------|-----|
@@ -62,10 +60,10 @@ The lab runs across two dedicated Ubuntu cloud servers hosted in London, keeping
 | Case Mgmt | MyDFIR-TheHive | 192.248.149.20 | 6 | 16GB | 320GB SSD | Ubuntu 24.04 LTS |
 
 **Wazuh Server:**
-![Wazuh Cloud Server](./Wazuh-Cloud-Server.jpg)
+![Wazuh Cloud Server](./Architecture/Wazuh-Cloud-Server.jpg)
 
 **TheHive Server:**
-![TheHive Cloud Server](./TheHive-Cloud-Server.jpg)
+![TheHive Cloud Server](./Architecture/TheHive-Cloud-Server.jpg)
 
 ### High-Level Data Flow
 
