@@ -17,8 +17,6 @@ The lab simulates a real-world SOC environment integrating:
 
 ![SOC Architecture](./soc-architecture.png)
 
-![SOC Lab Diagram](./SOC_Lab_Diagram_drawio.png)
-
 ## 🔁 End-to-End Workflow
 
 1. Windows 10 client generates security events.
